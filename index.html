@@ -21,46 +21,11 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
     body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
 
-    /* AUTH PAGE */
-    .auth-container {
-      display: flex; justify-content: center; align-items: center; min-height: 100vh;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 20px;
-    }
-
-    .auth-card {
-      background: var(--card-bg); width: 100%; max-width: 440px; padding: 32px 24px;
-      border-radius: var(--radius); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-    }
-
-    .auth-header { text-align: center; margin-bottom: 24px; }
-    .auth-header .logo { font-size: 42px; color: var(--primary); margin-bottom: 6px; }
-    .auth-header h2 { font-size: 1.35rem; color: #0f172a; font-weight: 700; }
-    .auth-header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
-
-    .tab-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 24px; }
-    .tab-btn {
-      flex: 1; padding: 10px; border: none; background: transparent; font-size: 0.9rem;
-      font-weight: 600; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.2s;
-    }
-    .tab-btn.active { background: #ffffff; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
-
-    .form-group { margin-bottom: 16px; text-align: left; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #334155; }
-    
-    .phone-input-group {
-      display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #f8fafc;
-    }
-    .phone-prefix {
-      background: #e2e8f0; padding: 10px 12px; font-size: 0.9rem; font-weight: 600; color: #334155;
-      display: flex; align-items: center; border-right: 1px solid var(--border);
-    }
-    .phone-input-group input { width: 100%; padding: 10px 12px; border: none; outline: none; font-size: 0.95rem; background: transparent; }
-
     .standard-input, .select-input {
       width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
       font-size: 0.95rem; background: #f8fafc; outline: none;
     }
-    .standard-input:focus, .select-input:focus, .phone-input-group:focus-within {
+    .standard-input:focus, .select-input:focus {
       border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
@@ -76,11 +41,8 @@
     }
     .btn-secondary:hover { background: #cbd5e1; }
 
-    .form-container { display: none; }
-    .form-container.active { display: block; }
-
-    /* DASHBOARD LAYOUT & RESPONSIVE HP */
-    .app-layout { display: none; min-height: 100vh; position: relative; }
+    /* DASHBOARD LAYOUT */
+    .app-layout { display: flex; min-height: 100vh; position: relative; }
     
     .sidebar {
       width: 250px; background: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column;
@@ -141,6 +103,7 @@
     .badge-borrowed { background: #fef3c7; color: #d97706; }
     .badge-returned { background: #dcfce7; color: #15803d; }
     .badge-stock { background: #dbeafe; color: #1e40af; }
+    .badge-component { background: #f3e8ff; color: #7e22ce; }
 
     .action-btns { display: flex; gap: 6px; align-items: center; }
     .btn-sm { padding: 6px 10px; font-size: 0.78rem; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
@@ -191,73 +154,9 @@
 </head>
 <body>
 
-  <!-- AUTH PAGE -->
-  <div id="authPage" class="auth-container">
-    <div class="auth-card">
-      <div class="auth-header">
-        <i class="ph ph-warehouse logo"></i>
-        <h2>Gudang Tracking Sales</h2>
-        <p>Sistem Pencatatan Peminjaman Barang</p>
-      </div>
-
-      <div class="tab-group">
-        <button type="button" class="tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">Masuk (Login)</button>
-        <button type="button" class="tab-btn" id="tabRegisterBtn" onclick="switchTab('register')">Daftar Akun</button>
-      </div>
-
-      <!-- FORM LOGIN -->
-      <div id="loginForm" class="form-container active">
-        <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label>Nomor HP / WhatsApp (ID)</label>
-            <div class="phone-input-group">
-              <span class="phone-prefix">+62</span>
-              <input type="tel" id="loginPhone" placeholder="81234567890" value="81234567890" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="loginPass" class="standard-input" placeholder="••••••••" value="123456" required>
-          </div>
-          <button type="submit" class="btn-submit">Masuk ke Sistem</button>
-        </form>
-      </div>
-
-      <!-- FORM REGISTER -->
-      <div id="registerForm" class="form-container">
-        <form onsubmit="handleRegister(event)">
-          <div class="form-group">
-            <label>Nama Lengkap</label>
-            <input type="text" id="regName" class="standard-input" placeholder="Contoh: Budi Santoso" required>
-          </div>
-          <div class="form-group">
-            <label>Nomor HP / WA (Sebagai Username)</label>
-            <div class="phone-input-group">
-              <span class="phone-prefix">+62</span>
-              <input type="tel" id="regPhone" placeholder="81234567890" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Jabatan / Peran Admin</label>
-            <select id="regRole" class="select-input">
-              <option value="Admin Utama Gudang">Admin Utama Gudang</option>
-              <option value="Petugas Lapangan">Petugas Lapangan</option>
-              <option value="Kepala Gudang">Kepala Gudang</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Buat Password</label>
-            <input type="password" id="regPass" class="standard-input" placeholder="Minimal 6 karakter" required>
-          </div>
-          <button type="submit" class="btn-submit">Daftarkan Akun Baru</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
 
-  <!-- DASHBOARD UTAMA -->
+  <!-- DASHBOARD UTAMA (LANGSUNG TAMPIL) -->
   <div id="dashboardPage" class="app-layout">
     <aside id="sidebar" class="sidebar">
       <div class="sidebar-brand">
@@ -271,9 +170,6 @@
         <li id="menuStock" onclick="switchSidebarMenu('stock')">
           <a><i class="ph ph-package"></i> Stok Gudang</a>
         </li>
-        <li style="margin-top: auto;">
-          <a onclick="handleLogout()" style="color: #f87171;"><i class="ph ph-sign-out"></i> Keluar</a>
-        </li>
       </ul>
     </aside>
 
@@ -284,10 +180,10 @@
           <div style="font-weight: 600; font-size: 0.95rem;" id="pageTitleDisplay">Sistem Pencatatan Peminjaman Sales</div>
         </div>
         <div class="user-info">
-          <div class="avatar" id="avatarLetter">A</div>
+          <div class="avatar">A</div>
           <div>
-            <div id="displayUser" style="font-size: 0.85rem; font-weight: 600;">Admin Gudang</div>
-            <div id="displayRole" style="font-size: 0.75rem; color: var(--text-muted);">+62 81234567890</div>
+            <div style="font-size: 0.85rem; font-weight: 600;">Admin Gudang</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Sistem Tracking Internal</div>
           </div>
         </div>
       </header>
@@ -325,6 +221,7 @@
                   <tr>
                     <th>Bukti Foto</th>
                     <th>Nama / Kode Barang</th>
+                    <th>Tipe Pinjam</th>
                     <th>Qty</th>
                     <th>Nama Sales</th>
                     <th>Tgl Pinjam</th>
@@ -341,26 +238,15 @@
 
         <!-- SECTION 2: STOK GUDANG -->
         <div id="sectionStock" class="view-section">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <h3 id="stockHandsOn">15</h3>
-              <p>Stok KIT Hands ON (Tersedia)</p>
-            </div>
-            <div class="stat-card">
-              <h3 id="stockOperasi">10</h3>
-              <p>Stok KIT Operasi (Tersedia)</p>
-            </div>
-            <div class="stat-card">
-              <h3 id="stockMicromotor">8</h3>
-              <p>Stok Micromotor (Tersedia)</p>
-            </div>
+          <div class="stats-grid" id="stockSummaryCards">
+            <!-- Dynamic Stock Cards -->
           </div>
 
           <div class="panel-card">
             <div class="panel-header">
               <div class="panel-title">Katalog & Stok Gudang Utama</div>
-              <button class="btn-submit" style="width: auto; padding: 8px 16px; margin-top: 0; background-color: #16a34a;" onclick="openStockModal()">
-                <i class="ph ph-plus-circle"></i> Tambah / Update Stok
+              <button class="btn-submit" style="width: auto; padding: 8px 16px; margin-top: 0; background-color: #16a34a;" onclick="openAddCategoryModal()">
+                <i class="ph ph-plus-circle"></i> + Tambah Kategori Baru
               </button>
             </div>
 
@@ -370,10 +256,11 @@
                   <tr>
                     <th>Kategori Item</th>
                     <th>Kode Barang</th>
-                    <th>Total Stok Gudang</th>
-                    <th>Sedang Dipinjam</th>
+                    <th>Total Stok Fisik</th>
+                    <th>Sedang Dipinjam (Full)</th>
                     <th>Stok Tersedia</th>
                     <th>Status Stock</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="stockTableBody"></tbody>
@@ -395,14 +282,28 @@
       </div>
       <form onsubmit="saveLoan(event)">
         <input type="hidden" id="editLoanId" value="">
+        
         <div class="form-group">
-          <label>Pilih Barang Gudang</label>
+          <label>Pilih Barang Utama Gudang</label>
           <select id="inputItem" class="select-input" required>
-            <option value="KIT Hands ON">KIT Hands ON</option>
-            <option value="KIT Operasi">KIT Operasi</option>
-            <option value="Micromotor">Micromotor</option>
+            <!-- Dynamic Category Options -->
           </select>
         </div>
+
+        <div class="form-group">
+          <label>Tipe Peminjaman</label>
+          <select id="inputLoanType" class="select-input" onchange="toggleComponentInput()" required>
+            <option value="Full Paket">1 Paket Full (Set Utuh)</option>
+            <option value="Komponen Spesifik">Komponen / Isian Spesifik SAJA</option>
+          </select>
+        </div>
+
+        <div id="componentDetailBox" class="form-group" style="display: none; background: #f3e8ff; padding: 12px; border-radius: 8px; border: 1px dashed #a855f7;">
+          <label style="color: #6b21a8;">Rincian Item/Komponen yang Dibawa</label>
+          <input type="text" id="inputComponentNote" class="standard-input" placeholder="Contoh: Tang Extracting / Handpiece saja">
+          <span style="font-size: 0.75rem; color: #7e22ce; margin-top: 4px; display: block;">*Peminjaman komponen tidak memotong total paket utuh di stok gudang.</span>
+        </div>
+
         <div class="form-group">
           <label>Jumlah (Qty)</label>
           <input type="number" id="inputQty" class="standard-input" value="1" min="1" required>
@@ -456,33 +357,52 @@
     </div>
   </div>
 
-  <!-- MODAL 3: TAMBAH / UPDATE STOK GUDANG -->
-  <div id="stockModal" class="modal">
+  <!-- MODAL 3: EDIT STOK FISIK LANGSUNG -->
+  <div id="editStockModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Update Stok Barang Gudang</h3>
-        <button type="button" class="close-btn" onclick="closeStockModal()"><i class="ph ph-x"></i></button>
+        <h3 id="editStockModalTitle">Edit Total Stok Fisik Gudang</h3>
+        <button type="button" class="close-btn" onclick="closeEditStockModal()"><i class="ph ph-x"></i></button>
       </div>
-      <form onsubmit="updateStockItem(event)">
+      <form onsubmit="saveStockEdit(event)">
+        <input type="hidden" id="editStockCategoryKey">
         <div class="form-group">
-          <label>Kategori Barang</label>
-          <select id="stockCategorySelect" class="select-input" required>
-            <option value="KIT Hands ON">KIT Hands ON</option>
-            <option value="KIT Operasi">KIT Operasi</option>
-            <option value="Micromotor">Micromotor</option>
-          </select>
+          <label>Total Stok Fisik Gudang Terbaru</label>
+          <input type="number" id="editStockTotalQty" class="standard-input" min="0" required>
         </div>
-        <div class="form-group">
-          <label>Tambah Jumlah Stok Fisik Baru</label>
-          <input type="number" id="addStockQty" class="standard-input" value="5" min="1" required>
-        </div>
-        <button type="submit" class="btn-submit" style="background-color: #16a34a;">Tambahkan ke Stok Gudang</button>
-        <button type="button" class="btn-secondary" onclick="closeStockModal()">Batal</button>
+        <button type="submit" class="btn-submit" style="background-color: #16a34a;">Simpan Perubahan Stok</button>
+        <button type="button" class="btn-secondary" onclick="closeEditStockModal()">Batal</button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL 4: VIEW FOTO BESAR -->
+  <!-- MODAL 4: TAMBAH KATEGORI BARANG BARU -->
+  <div id="addCategoryModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tambah Kategori Barang Baru</h3>
+        <button type="button" class="close-btn" onclick="closeAddCategoryModal()"><i class="ph ph-x"></i></button>
+      </div>
+      <form onsubmit="addNewCategory(event)">
+        <div class="form-group">
+          <label>Nama Kategori / Barang</label>
+          <input type="text" id="newCategoryName" class="standard-input" placeholder="Contoh: Dental Chair Portable" required>
+        </div>
+        <div class="form-group">
+          <label>Kode Barang</label>
+          <input type="text" id="newCategoryCode" class="standard-input" placeholder="Contoh: DNT-004" required>
+        </div>
+        <div class="form-group">
+          <label>Jumlah Stok Awal Fisik</label>
+          <input type="number" id="newCategoryInitialQty" class="standard-input" value="10" min="0" required>
+        </div>
+        <button type="submit" class="btn-submit" style="background-color: #16a34a;">Tambahkan Kategori</button>
+        <button type="button" class="btn-secondary" onclick="closeAddCategoryModal()">Batal</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: VIEW FOTO BESAR -->
   <div id="viewImageModal" class="modal" onclick="closeViewImageModal()">
     <div class="view-image-modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
@@ -494,24 +414,26 @@
   </div>
 
   <script>
-    let registeredUsers = {
-      '81234567890': { name: 'Admin Gudang', role: 'Admin Utama Gudang', pass: '123456' }
-    };
-
     let inventoryStock = {
-      'KIT Hands ON': { code: 'KIT-HON-01', total: 15 },
+      'KIT Hands ON': { code: 'KIT-HON-01', total: 16 },
       'KIT Operasi': { code: 'KIT-OPS-02', total: 10 },
-      'Micromotor': { code: 'MCM-03', total: 8 }
+      'Micromotor': { code: 'MCM-03', total: 10 }
     };
 
     let loanData = [
-      { id: 1, item: 'KIT Hands ON', qty: 1, sales: 'Budi Santoso', date: '2026-10-14', returnDate: '-', status: 'Dipinjam', image: '', returnImage: '' },
-      { id: 2, item: 'Micromotor', qty: 2, sales: 'Siti Rahma', date: '2026-10-15', returnDate: '-', status: 'Dipinjam', image: '', returnImage: '' },
-      { id: 3, item: 'KIT Operasi', qty: 1, sales: 'Andi Pratama', date: '2026-10-10', returnDate: '2026-10-12', status: 'Dikembalikan', image: '', returnImage: '' }
+      { id: 1, item: 'KIT Hands ON', loanType: 'Full Paket', componentNote: '', qty: 1, sales: 'Budi Santoso', date: '2026-10-14', returnDate: '-', status: 'Dipinjam', image: '', returnImage: '' },
+      { id: 2, item: 'Micromotor', loanType: 'Full Paket', componentNote: '', qty: 2, sales: 'Siti Rahma', date: '2026-10-15', returnDate: '-', status: 'Dipinjam', image: '', returnImage: '' },
+      { id: 3, item: 'KIT Operasi', loanType: 'Komponen Spesifik', componentNote: 'Handpiece + Drill Bit 2.0', qty: 1, sales: 'Andi Pratama', date: '2026-10-10', returnDate: '2026-10-12', status: 'Dikembalikan', image: '', returnImage: '' }
     ];
 
     let currentBorrowImage = '';
     let currentReturnImage = '';
+
+    // INISIALISASI LANGSUNG KETIKA WEB DIBUKA
+    window.onload = function() {
+      renderTable();
+      updateCategorySelectOptions();
+    };
 
     function toggleMobileSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
@@ -543,61 +465,20 @@
       closeMobileSidebar();
     }
 
-    function switchTab(type) {
-      const tabLogin = document.getElementById('tabLoginBtn');
-      const tabRegister = document.getElementById('tabRegisterBtn');
-      const loginForm = document.getElementById('loginForm');
-      const registerForm = document.getElementById('registerForm');
+    function toggleComponentInput() {
+      const type = document.getElementById('inputLoanType').value;
+      document.getElementById('componentDetailBox').style.display = (type === 'Komponen Spesifik') ? 'block' : 'none';
+    }
 
-      if (type === 'login') {
-        tabLogin.classList.add('active'); tabRegister.classList.remove('active');
-        loginForm.classList.add('active'); registerForm.classList.remove('active');
-      } else {
-        tabRegister.classList.add('active'); tabLogin.classList.remove('active');
-        registerForm.classList.add('active'); loginForm.classList.remove('active');
+    function updateCategorySelectOptions() {
+      const select = document.getElementById('inputItem');
+      select.innerHTML = '';
+      for (const catName of Object.keys(inventoryStock)) {
+        const opt = document.createElement('option');
+        opt.value = catName;
+        opt.innerText = catName;
+        select.appendChild(opt);
       }
-    }
-
-    function handleRegister(e) {
-      e.preventDefault();
-      const name = document.getElementById('regName').value;
-      const phone = document.getElementById('regPhone').value;
-      const role = document.getElementById('regRole').value;
-      const pass = document.getElementById('regPass').value;
-
-      registeredUsers[phone] = { name: name, role: role, pass: pass };
-      alert(`Pendaftaran Akun atas nama "${name}" berhasil!\nSilakan Login.`);
-      
-      document.getElementById('loginPhone').value = phone;
-      document.getElementById('loginPass').value = pass;
-      switchTab('login');
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const phone = document.getElementById('loginPhone').value;
-      const pass = document.getElementById('loginPass').value;
-      const user = registeredUsers[phone];
-
-      if (user && user.pass === pass) {
-        document.getElementById('displayUser').innerText = user.name;
-        document.getElementById('displayRole').innerText = user.role + ' (+62 ' + phone + ')';
-        document.getElementById('avatarLetter').innerText = user.name.charAt(0).toUpperCase();
-        openDashboard();
-      } else {
-        alert('Nomor HP atau Password belum terdaftar / salah!');
-      }
-    }
-
-    function openDashboard() {
-      document.getElementById('authPage').style.display = 'none';
-      document.getElementById('dashboardPage').style.display = 'flex';
-      renderTable();
-    }
-
-    function handleLogout() {
-      document.getElementById('dashboardPage').style.display = 'none';
-      document.getElementById('authPage').style.display = 'flex';
     }
 
     function previewImage(event, imgId, boxId, type) {
@@ -645,6 +526,14 @@
           ? `<img src="${data.returnImage}" class="item-thumb" onclick="openViewImageModal('${data.returnImage}', 'Foto Pengembalian: ${data.item}')" title="Foto Saat Dikembalikan">`
           : (data.status === 'Dikembalikan' ? `<div class="item-thumb" style="font-size:0.7rem; color:#94a3b8;"><i class="ph ph-image"></i></div>` : '');
 
+        const itemDisplay = (data.loanType === 'Komponen Spesifik' && data.componentNote) 
+          ? `<strong>${data.item}</strong><br><span style="font-size:0.75rem; color:#7e22ce;">(${data.componentNote})</span>`
+          : `<strong>${data.item}</strong>`;
+
+        const typeBadge = (data.loanType === 'Komponen Spesifik')
+          ? `<span class="badge badge-component">Komponen</span>`
+          : `<span class="badge badge-stock">Full Set</span>`;
+
         tr.innerHTML = `
           <td>
             <div class="photo-cell">
@@ -652,7 +541,8 @@
               ${imgKembali}
             </div>
           </td>
-          <td><strong>${data.item}</strong></td>
+          <td>${itemDisplay}</td>
+          <td>${typeBadge}</td>
           <td>${data.qty} pcs</td>
           <td>${data.sales}</td>
           <td>${data.date}</td>
@@ -679,11 +569,15 @@
 
     function renderStockTable() {
       const tbody = document.getElementById('stockTableBody');
+      const cardsGrid = document.getElementById('stockSummaryCards');
       tbody.innerHTML = '';
+      cardsGrid.innerHTML = '';
 
-      let borrowedMap = { 'KIT Hands ON': 0, 'KIT Operasi': 0, 'Micromotor': 0 };
+      let borrowedMap = {};
+      for(let key of Object.keys(inventoryStock)) borrowedMap[key] = 0;
+
       loanData.forEach(item => {
-        if(item.status === 'Dipinjam' && borrowedMap[item.item] !== undefined) {
+        if(item.status === 'Dipinjam' && item.loanType === 'Full Paket' && borrowedMap[item.item] !== undefined) {
           borrowedMap[item.item] += parseInt(item.qty);
         }
       });
@@ -692,21 +586,28 @@
         const borrowedQty = borrowedMap[name] || 0;
         const availableQty = info.total - borrowedQty;
 
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'stat-card';
+        cardDiv.innerHTML = `
+          <h3>${availableQty} pcs</h3>
+          <p>Stok ${name} (Tersedia)</p>
+        `;
+        cardsGrid.appendChild(cardDiv);
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong>${name}</strong></td>
           <td>${info.code}</td>
-          <td>${info.total} pcs</td>
+          <td><strong>${info.total} pcs</strong></td>
           <td><span style="color: #d97706; font-weight: 600;">${borrowedQty} pcs</span></td>
           <td><strong style="color: #16a34a;">${availableQty} pcs</strong></td>
           <td><span class="badge badge-stock">${availableQty > 0 ? 'Tersedia' : 'Habis'}</span></td>
+          <td>
+            <button class="btn-sm btn-warning" onclick="openEditStockModal('${name}')"><i class="ph ph-pencil-simple"></i> Edit Stok</button>
+          </td>
         `;
         tbody.appendChild(tr);
       }
-
-      document.getElementById('stockHandsOn').innerText = (inventoryStock['KIT Hands ON'].total - (borrowedMap['KIT Hands ON'] || 0)) + ' pcs';
-      document.getElementById('stockOperasi').innerText = (inventoryStock['KIT Operasi'].total - (borrowedMap['KIT Operasi'] || 0)) + ' pcs';
-      document.getElementById('stockMicromotor').innerText = (inventoryStock['Micromotor'].total - (borrowedMap['Micromotor'] || 0)) + ' pcs';
     }
 
     function openReturnModal(id) {
@@ -733,19 +634,15 @@
         item.returnDate = returnDate;
         item.returnImage = currentReturnImage;
 
-        // OTOMATIS TAMBAH STOK GUDANG KEMBALI
-        if(inventoryStock[item.item]) {
-          inventoryStock[item.item].total += parseInt(item.qty);
-        }
-
         renderTable();
         renderStockTable();
         closeReturnModal();
-        alert(`Barang ${item.item} (${item.qty} pcs) berhasil dikembalikan! Stok gudang bertambah.`);
+        alert(`Barang ${item.item} berhasil dikembalikan!`);
       }
     }
 
     function openModal() {
+      updateCategorySelectOptions();
       document.getElementById('editLoanId').value = '';
       document.getElementById('loanModalTitle').innerText = 'Catat Peminjaman Barang';
       document.getElementById('loanModal').style.display = 'flex';
@@ -754,42 +651,81 @@
       document.getElementById('imagePreviewBox').style.display = 'none';
       document.getElementById('inputImage').value = '';
       document.getElementById('inputSales').value = '';
+      document.getElementById('inputLoanType').value = 'Full Paket';
+      document.getElementById('inputComponentNote').value = '';
+      toggleComponentInput();
     }
 
     function closeModal() {
       document.getElementById('loanModal').style.display = 'none';
     }
 
-    function openStockModal() {
-      document.getElementById('stockModal').style.display = 'flex';
+    function openEditStockModal(categoryKey) {
+      document.getElementById('editStockCategoryKey').value = categoryKey;
+      document.getElementById('editStockModalTitle').innerText = 'Edit Total Stok Fisik: ' + categoryKey;
+      document.getElementById('editStockTotalQty').value = inventoryStock[categoryKey].total;
+      document.getElementById('editStockModal').style.display = 'flex';
     }
 
-    function closeStockModal() {
-      document.getElementById('stockModal').style.display = 'none';
+    function closeEditStockModal() {
+      document.getElementById('editStockModal').style.display = 'none';
     }
 
-    function updateStockItem(e) {
+    function saveStockEdit(e) {
       e.preventDefault();
-      const cat = document.getElementById('stockCategorySelect').value;
-      const addQty = parseInt(document.getElementById('addStockQty').value);
+      const categoryKey = document.getElementById('editStockCategoryKey').value;
+      const newQty = parseInt(document.getElementById('editStockTotalQty').value);
 
-      if(inventoryStock[cat]) {
-        inventoryStock[cat].total += addQty;
+      if(inventoryStock[categoryKey]) {
+        inventoryStock[categoryKey].total = newQty;
         renderStockTable();
-        closeStockModal();
-        alert(`Stok ${cat} berhasil ditambahkan sebanyak ${addQty} pcs!`);
+        closeEditStockModal();
+        alert(`Total stok ${categoryKey} berhasil diubah menjadi ${newQty} pcs!`);
       }
+    }
+
+    function openAddCategoryModal() {
+      document.getElementById('addCategoryModal').style.display = 'flex';
+    }
+
+    function closeAddCategoryModal() {
+      document.getElementById('addCategoryModal').style.display = 'none';
+    }
+
+    function addNewCategory(e) {
+      e.preventDefault();
+      const name = document.getElementById('newCategoryName').value;
+      const code = document.getElementById('newCategoryCode').value;
+      const qty = parseInt(document.getElementById('newCategoryInitialQty').value);
+
+      if(inventoryStock[name]) {
+        alert('Kategori barang ini sudah ada!');
+        return;
+      }
+
+      inventoryStock[name] = { code: code, total: qty };
+      updateCategorySelectOptions();
+      renderStockTable();
+      closeAddCategoryModal();
+      document.getElementById('newCategoryName').value = '';
+      document.getElementById('newCategoryCode').value = '';
+      alert(`Kategori ${name} berhasil ditambahkan!`);
     }
 
     function editLoan(id) {
       const item = loanData.find(d => d.id === id);
       if(item) {
+        updateCategorySelectOptions();
         document.getElementById('editLoanId').value = item.id;
         document.getElementById('loanModalTitle').innerText = 'Edit History Peminjaman';
         document.getElementById('inputItem').value = item.item;
+        document.getElementById('inputLoanType').value = item.loanType || 'Full Paket';
+        document.getElementById('inputComponentNote').value = item.componentNote || '';
         document.getElementById('inputQty').value = item.qty;
         document.getElementById('inputSales').value = item.sales;
         document.getElementById('inputDate').value = item.date;
+
+        toggleComponentInput();
 
         currentBorrowImage = item.image;
         if(item.image) {
@@ -806,10 +742,6 @@
     function deleteLoan(id) {
       const item = loanData.find(d => d.id === id);
       if(item && confirm('Apakah Anda yakin ingin menghapus history peminjaman ini?')) {
-        // JIKA DIHAPUS SAAT MASIH DIPINJAM, KEMBALIKAN STOK FISIK
-        if(item.status === 'Dipinjam' && inventoryStock[item.item]) {
-          inventoryStock[item.item].total += parseInt(item.qty);
-        }
         loanData = loanData.filter(d => d.id !== id);
         renderTable();
         renderStockTable();
@@ -820,63 +752,45 @@
       e.preventDefault();
       const editId = document.getElementById('editLoanId').value;
       const selectedItem = document.getElementById('inputItem').value;
+      const loanType = document.getElementById('inputLoanType').value;
+      const componentNote = document.getElementById('inputComponentNote').value;
       const qty = parseInt(document.getElementById('inputQty').value);
       const sales = document.getElementById('inputSales').value;
       const date = document.getElementById('inputDate').value;
 
       if(editId) {
-        // EDIT HISTORI LAMA
         const item = loanData.find(d => d.id === parseInt(editId));
         if(item) {
-          // KOREKSI STOK JIKA QTY ATAU BARANG DIUBAH
-          if(item.status === 'Dipinjam') {
-            inventoryStock[item.item].total += parseInt(item.qty); // kembalikan qty lama
-            
-            let borrowedQty = 0;
-            loanData.forEach(d => {
-              if(d.item === selectedItem && d.status === 'Dipinjam' && d.id !== item.id) {
-                borrowedQty += parseInt(d.qty);
-              }
-            });
-            const currentAvailable = inventoryStock[selectedItem].total - borrowedQty;
-
-            if(qty > currentAvailable) {
-              inventoryStock[item.item].total -= parseInt(item.qty); // rollback
-              alert(`Stok ${selectedItem} tidak cukup untuk perubahan ini! Tersedia: ${currentAvailable} pcs.`);
-              return;
-            }
-
-            inventoryStock[selectedItem].total -= qty; // potong stok baru
-          }
-
           item.item = selectedItem;
+          item.loanType = loanType;
+          item.componentNote = componentNote;
           item.qty = qty;
           item.sales = sales;
           item.date = date;
           if(currentBorrowImage) item.image = currentBorrowImage;
         }
       } else {
-        // PINJAM BARU (KURANGI STOK GUDANG OTOMATIS)
-        let borrowedQty = 0;
-        loanData.forEach(item => {
-          if(item.item === selectedItem && item.status === 'Dipinjam') {
-            borrowedQty += parseInt(item.qty);
+        if(loanType === 'Full Paket') {
+          let borrowedQty = 0;
+          loanData.forEach(item => {
+            if(item.item === selectedItem && item.status === 'Dipinjam' && item.loanType === 'Full Paket') {
+              borrowedQty += parseInt(item.qty);
+            }
+          });
+
+          const currentAvailable = inventoryStock[selectedItem].total - borrowedQty;
+
+          if(qty > currentAvailable) {
+            alert(`Stok Paket Utuh ${selectedItem} tidak mencukupi! Stok paket tersedia di gudang hanya ${currentAvailable} pcs.`);
+            return;
           }
-        });
-
-        const currentAvailable = inventoryStock[selectedItem].total - borrowedQty;
-
-        if(qty > currentAvailable) {
-          alert(`Stok ${selectedItem} tidak mencukupi! Stok tersedia di gudang hanya ${currentAvailable} pcs.`);
-          return;
         }
-
-        // OTOMATIS KURANGI STOK FISIK
-        inventoryStock[selectedItem].total -= qty;
 
         loanData.unshift({
           id: Date.now(),
           item: selectedItem,
+          loanType: loanType,
+          componentNote: componentNote,
           qty: qty,
           sales: sales,
           date: date,
