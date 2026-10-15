@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0084)file:///C:/Users/grati/OneDrive/Documents/Pemprograman%20WEB%201/Pertemuan%203.html# -->
-<html lang="id"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistem Tracking Barang Gudang - Internal Admin</title>
-  <script src="./Sistem Tracking Barang Gudang - Internal Admin_files/web"></script><link rel="stylesheet" type="text/css" href="./Sistem Tracking Barang Gudang - Internal Admin_files/style.css"><link rel="stylesheet" type="text/css" href="./Sistem Tracking Barang Gudang - Internal Admin_files/style(1).css"><link rel="stylesheet" type="text/css" href="./Sistem Tracking Barang Gudang - Internal Admin_files/style(2).css"><link rel="stylesheet" type="text/css" href="./Sistem Tracking Barang Gudang - Internal Admin_files/style(3).css"><link rel="stylesheet" type="text/css" href="./Sistem Tracking Barang Gudang - Internal Admin_files/style(4).css"><link rel="stylesheet" type="text/css" href="./Sistem Tracking Barang Gudang - Internal Admin_files/style(5).css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
       --primary: #2563eb;
@@ -19,7 +19,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-    body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; }
+    body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
 
     /* AUTH PAGE */
     .auth-container {
@@ -28,7 +28,7 @@
     }
 
     .auth-card {
-      background: var(--card-bg); width: 100%; max-width: 440px; padding: 36px 30px;
+      background: var(--card-bg); width: 100%; max-width: 440px; padding: 32px 24px;
       border-radius: var(--radius); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
@@ -70,17 +70,24 @@
     }
     .btn-submit:hover { background: var(--primary-hover); }
 
+    .btn-secondary {
+      width: 100%; padding: 10px; background: #e2e8f0; color: #334155; border: none;
+      border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 8px;
+    }
+    .btn-secondary:hover { background: #cbd5e1; }
+
     .form-container { display: none; }
     .form-container.active { display: block; }
 
-    /* DASHBOARD GUDANG */
-    .app-layout { display: none; min-height: 100vh; }
+    /* DASHBOARD LAYOUT & RESPONSIVE HP */
+    .app-layout { display: none; min-height: 100vh; position: relative; }
     
     .sidebar {
       width: 250px; background: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column;
-      position: fixed; top: 0; bottom: 0; left: 0;
+      position: fixed; top: 0; bottom: 0; left: 0; z-index: 150; transition: transform 0.3s ease;
     }
-    .sidebar-brand { padding: 20px; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: #38bdf8; }
+
+    .sidebar-brand { padding: 20px; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; color: #38bdf8; }
     .sidebar-menu { list-style: none; padding: 0 10px; }
     .sidebar-menu li a {
       display: flex; align-items: center; gap: 10px; padding: 12px 14px; color: #94a3b8; text-decoration: none;
@@ -88,32 +95,44 @@
     }
     .sidebar-menu li.active a, .sidebar-menu li a:hover { background: #1e293b; color: #fff; }
 
-    .main-wrapper { margin-left: 250px; flex: 1; display: flex; flex-direction: column; }
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 140;
+    }
+
+    .main-wrapper { margin-left: 250px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
     .topbar {
       height: 65px; background: #fff; border-bottom: 1px solid var(--border); display: flex;
-      align-items: center; justify-content: space-between; padding: 0 28px;
+      align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; z-index: 100;
     }
+
+    .mobile-nav-toggle {
+      display: none; background: transparent; border: none; font-size: 24px; color: var(--text-main); cursor: pointer; margin-right: 12px;
+    }
+
+    .topbar-left { display: flex; align-items: center; }
+
     .user-info { display: flex; align-items: center; gap: 10px; }
     .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    .content { padding: 28px; }
+    .content { padding: 20px; }
 
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: #fff; padding: 18px; border-radius: var(--radius); border: 1px solid var(--border); }
-    .stat-card h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-    .stat-card p { font-size: 0.85rem; color: var(--text-muted); }
+    .stat-card { background: #fff; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .stat-card h3 { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+    .stat-card p { font-size: 0.8rem; color: var(--text-muted); }
 
-    .panel-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border); padding: 20px; }
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .panel-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border); padding: 18px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
     .panel-title { font-size: 1.05rem; font-weight: 700; }
 
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
-    th { background: #f8fafc; padding: 12px; font-weight: 600; border-bottom: 1px solid var(--border); color: #475569; }
-    td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; white-space: nowrap; }
+    th { background: #f8fafc; padding: 10px 12px; font-weight: 600; border-bottom: 1px solid var(--border); color: #475569; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 
     .photo-cell { display: flex; gap: 6px; }
     .item-thumb {
-      width: 42px; height: 42px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border);
+      width: 40px; height: 40px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border);
       cursor: pointer; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;
     }
     .item-thumb:hover { transform: scale(1.08); }
@@ -123,13 +142,26 @@
     .badge-returned { background: #dcfce7; color: #15803d; }
     .badge-stock { background: #dbeafe; color: #1e40af; }
 
-    .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; }
+    .action-btns { display: flex; gap: 6px; align-items: center; }
+    .btn-sm { padding: 6px 10px; font-size: 0.78rem; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
     .btn-success { background: #22c55e; color: #fff; }
     .btn-success:hover { background: #16a34a; }
+    .btn-warning { background: #f59e0b; color: #fff; }
+    .btn-warning:hover { background: #d97706; }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-danger:hover { background: #dc2626; }
 
-    /* MODAL STYLES */
-    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 200; }
-    .modal-content { background: #fff; width: 100%; max-width: 460px; padding: 24px; border-radius: 12px; max-height: 90vh; overflow-y: auto; }
+    /* MODAL POP-UP */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 200; padding: 16px; }
+    .modal-content {
+      background: #fff; width: 100%; max-width: 460px; padding: 24px; border-radius: 12px;
+      max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+    }
+
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+    .modal-header h3 { font-size: 1.1rem; font-weight: 700; color: #0f172a; }
+    .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #64748b; transition: all 0.2s; }
+    .close-btn:hover { background: #e2e8f0; color: #0f172a; }
 
     .image-preview-container {
       margin-top: 8px; display: none; text-align: center; border: 1px dashed var(--border); padding: 10px; border-radius: 8px;
@@ -137,18 +169,30 @@
     .image-preview-container img { max-width: 100%; max-height: 120px; border-radius: 6px; }
 
     .view-image-modal-content {
-      background: #fff; padding: 16px; border-radius: 12px; max-width: 90vw; max-height: 90vh; text-align: center; position: relative;
+      background: #fff; padding: 16px; border-radius: 12px; max-width: 95vw; max-height: 90vh; text-align: center; position: relative;
     }
     .view-image-modal-content img { max-width: 100%; max-height: 75vh; border-radius: 8px; object-fit: contain; }
 
     .view-section { display: none; }
     .view-section.active { display: block; }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main-wrapper { margin-left: 0; }
+      .mobile-nav-toggle { display: block; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 0 14px; }
+      .content { padding: 14px; }
+      .user-info div { display: none; }
+    }
   </style>
 </head>
 <body>
 
   <!-- AUTH PAGE -->
-  <div id="authPage" class="auth-container" style="display: none;">
+  <div id="authPage" class="auth-container">
     <div class="auth-card">
       <div class="auth-header">
         <i class="ph ph-warehouse logo"></i>
@@ -168,12 +212,12 @@
             <label>Nomor HP / WhatsApp (ID)</label>
             <div class="phone-input-group">
               <span class="phone-prefix">+62</span>
-              <input type="tel" id="loginPhone" placeholder="81234567890" value="81234567890" required="">
+              <input type="tel" id="loginPhone" placeholder="81234567890" value="81234567890" required>
             </div>
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" id="loginPass" class="standard-input" placeholder="••••••••" value="123456" required="">
+            <input type="password" id="loginPass" class="standard-input" placeholder="••••••••" value="123456" required>
           </div>
           <button type="submit" class="btn-submit">Masuk ke Sistem</button>
         </form>
@@ -184,13 +228,13 @@
         <form onsubmit="handleRegister(event)">
           <div class="form-group">
             <label>Nama Lengkap</label>
-            <input type="text" id="regName" class="standard-input" placeholder="Contoh: Budi Santoso" required="">
+            <input type="text" id="regName" class="standard-input" placeholder="Contoh: Budi Santoso" required>
           </div>
           <div class="form-group">
             <label>Nomor HP / WA (Sebagai Username)</label>
             <div class="phone-input-group">
               <span class="phone-prefix">+62</span>
-              <input type="tel" id="regPhone" placeholder="81234567890" required="">
+              <input type="tel" id="regPhone" placeholder="81234567890" required>
             </div>
           </div>
           <div class="form-group">
@@ -203,7 +247,7 @@
           </div>
           <div class="form-group">
             <label>Buat Password</label>
-            <input type="password" id="regPass" class="standard-input" placeholder="Minimal 6 karakter" required="">
+            <input type="password" id="regPass" class="standard-input" placeholder="Minimal 6 karakter" required>
           </div>
           <button type="submit" class="btn-submit">Daftarkan Akun Baru</button>
         </form>
@@ -211,17 +255,20 @@
     </div>
   </div>
 
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
   <!-- DASHBOARD UTAMA -->
-  <div id="dashboardPage" class="app-layout" style="display: flex;">
-    <aside class="sidebar">
+  <div id="dashboardPage" class="app-layout">
+    <aside id="sidebar" class="sidebar">
       <div class="sidebar-brand">
-        <i class="ph ph-boxes"></i> Tracking Gudang
+        <span><i class="ph ph-boxes"></i> Tracking Gudang</span>
+        <i class="ph ph-x close-mobile-icon" style="cursor:pointer; display:none;" onclick="closeMobileSidebar()"></i>
       </div>
       <ul class="sidebar-menu">
         <li id="menuLoan" class="active" onclick="switchSidebarMenu('loan')">
           <a><i class="ph ph-list-checks"></i> Data Peminjaman</a>
         </li>
-        <li id="menuStock" onclick="switchSidebarMenu('stock')" class="">
+        <li id="menuStock" onclick="switchSidebarMenu('stock')">
           <a><i class="ph ph-package"></i> Stok Gudang</a>
         </li>
         <li style="margin-top: auto;">
@@ -232,12 +279,15 @@
 
     <div class="main-wrapper">
       <header class="topbar">
-        <div style="font-weight: 600;" id="pageTitleDisplay">Sistem Pencatatan Peminjaman Sales</div>
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" onclick="toggleMobileSidebar()"><i class="ph ph-list"></i></button>
+          <div style="font-weight: 600; font-size: 0.95rem;" id="pageTitleDisplay">Sistem Pencatatan Peminjaman Sales</div>
+        </div>
         <div class="user-info">
-          <div class="avatar" id="avatarLetter">F</div>
+          <div class="avatar" id="avatarLetter">A</div>
           <div>
-            <div id="displayUser" style="font-size: 0.85rem; font-weight: 600;">fikri</div>
-            <div id="displayRole" style="font-size: 0.75rem; color: var(--text-muted);">Admin Utama Gudang (+62 85174484985)</div>
+            <div id="displayUser" style="font-size: 0.85rem; font-weight: 600;">Admin Gudang</div>
+            <div id="displayRole" style="font-size: 0.75rem; color: var(--text-muted);">+62 81234567890</div>
           </div>
         </div>
       </header>
@@ -269,131 +319,66 @@
               </button>
             </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <th>Bukti Foto</th>
-                  <th>Nama / Kode Barang</th>
-                  <th>Qty</th>
-                  <th>Nama Sales</th>
-                  <th>Tgl Pinjam</th>
-                  <th>Tgl Kembali</th>
-                  <th>Status</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="loanTableBody"><tr>
-          <td>
-            <div class="photo-cell">
-              <div class="item-thumb" style="font-size:0.7rem; color:#94a3b8;"><i class="ph ph-image"></i></div>
-              
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Bukti Foto</th>
+                    <th>Nama / Kode Barang</th>
+                    <th>Qty</th>
+                    <th>Nama Sales</th>
+                    <th>Tgl Pinjam</th>
+                    <th>Tgl Kembali</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="loanTableBody"></tbody>
+              </table>
             </div>
-          </td>
-          <td><strong>KIT Hands ON</strong></td>
-          <td>1 pcs</td>
-          <td>Budi Santoso</td>
-          <td>2026-10-14</td>
-          <td>-</td>
-          <td><span class="badge badge-borrowed">Dipinjam</span></td>
-          <td>
-            <button class="btn-sm btn-success" onclick="openReturnModal(1)"><i class="ph ph-check"></i> Kembalikan</button>
-          </td>
-        </tr><tr>
-          <td>
-            <div class="photo-cell">
-              <div class="item-thumb" style="font-size:0.7rem; color:#94a3b8;"><i class="ph ph-image"></i></div>
-              
-            </div>
-          </td>
-          <td><strong>Micromotor</strong></td>
-          <td>2 pcs</td>
-          <td>Siti Rahma</td>
-          <td>2026-10-15</td>
-          <td>-</td>
-          <td><span class="badge badge-borrowed">Dipinjam</span></td>
-          <td>
-            <button class="btn-sm btn-success" onclick="openReturnModal(2)"><i class="ph ph-check"></i> Kembalikan</button>
-          </td>
-        </tr><tr>
-          <td>
-            <div class="photo-cell">
-              <div class="item-thumb" style="font-size:0.7rem; color:#94a3b8;"><i class="ph ph-image"></i></div>
-              <div class="item-thumb" style="font-size:0.7rem; color:#94a3b8;"><i class="ph ph-image"></i></div>
-            </div>
-          </td>
-          <td><strong>KIT Operasi</strong></td>
-          <td>1 pcs</td>
-          <td>Andi Pratama</td>
-          <td>2026-10-10</td>
-          <td>2026-10-12</td>
-          <td><span class="badge badge-returned">Dikembalikan</span></td>
-          <td>
-            <span style="color: #94a3b8; font-size: 0.8rem;">Selesai</span>
-          </td>
-        </tr></tbody>
-            </table>
           </div>
         </div>
 
-        <!-- SECTION 2: STOK GUDANG BARU -->
+        <!-- SECTION 2: STOK GUDANG -->
         <div id="sectionStock" class="view-section">
           <div class="stats-grid">
             <div class="stat-card">
-              <h3 id="stockHandsOn">14 pcs</h3>
+              <h3 id="stockHandsOn">15</h3>
               <p>Stok KIT Hands ON (Tersedia)</p>
             </div>
             <div class="stat-card">
-              <h3 id="stockOperasi">10 pcs</h3>
+              <h3 id="stockOperasi">10</h3>
               <p>Stok KIT Operasi (Tersedia)</p>
             </div>
             <div class="stat-card">
-              <h3 id="stockMicromotor">6 pcs</h3>
+              <h3 id="stockMicromotor">8</h3>
               <p>Stok Micromotor (Tersedia)</p>
             </div>
           </div>
 
           <div class="panel-card">
             <div class="panel-header">
-              <div class="panel-title">Katalog &amp; Stok Gudang Utama</div>
+              <div class="panel-title">Katalog & Stok Gudang Utama</div>
               <button class="btn-submit" style="width: auto; padding: 8px 16px; margin-top: 0; background-color: #16a34a;" onclick="openStockModal()">
                 <i class="ph ph-plus-circle"></i> Tambah / Update Stok
               </button>
             </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <th>Kategori Item</th>
-                  <th>Kode Barang</th>
-                  <th>Total Stok Gudang</th>
-                  <th>Sedang Dipinjam</th>
-                  <th>Stok Tersedia</th>
-                  <th>Status Stock</th>
-                </tr>
-              </thead>
-              <tbody id="stockTableBody"><tr>
-          <td><strong>KIT Hands ON</strong></td>
-          <td>KIT-HON-01</td>
-          <td>15 pcs</td>
-          <td><span style="color: #d97706; font-weight: 600;">1 pcs</span></td>
-          <td><strong style="color: #16a34a;">14 pcs</strong></td>
-          <td><span class="badge badge-stock">Tersedia</span></td>
-        </tr><tr>
-          <td><strong>KIT Operasi</strong></td>
-          <td>KIT-OPS-02</td>
-          <td>10 pcs</td>
-          <td><span style="color: #d97706; font-weight: 600;">0 pcs</span></td>
-          <td><strong style="color: #16a34a;">10 pcs</strong></td>
-          <td><span class="badge badge-stock">Tersedia</span></td>
-        </tr><tr>
-          <td><strong>Micromotor</strong></td>
-          <td>MCM-03</td>
-          <td>8 pcs</td>
-          <td><span style="color: #d97706; font-weight: 600;">2 pcs</span></td>
-          <td><strong style="color: #16a34a;">6 pcs</strong></td>
-          <td><span class="badge badge-stock">Tersedia</span></td>
-        </tr></tbody>
-            </table>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Kategori Item</th>
+                    <th>Kode Barang</th>
+                    <th>Total Stok Gudang</th>
+                    <th>Sedang Dipinjam</th>
+                    <th>Stok Tersedia</th>
+                    <th>Status Stock</th>
+                  </tr>
+                </thead>
+                <tbody id="stockTableBody"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -401,17 +386,18 @@
     </div>
   </div>
 
-  <!-- MODAL 1: FORM INPUT PINJAM BARANG -->
-  <div id="loanModal" class="modal" style="display: none;">
+  <!-- MODAL 1: FORM INPUT / EDIT PINJAM BARANG -->
+  <div id="loanModal" class="modal">
     <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 1.1rem;">Catat Peminjaman Barang</h3>
-        <i class="ph ph-x" style="cursor: pointer; font-size: 20px;" onclick="closeModal()"></i>
+      <div class="modal-header">
+        <h3 id="loanModalTitle">Catat Peminjaman Barang</h3>
+        <button type="button" class="close-btn" onclick="closeModal()"><i class="ph ph-x"></i></button>
       </div>
-      <form onsubmit="addLoan(event)">
+      <form onsubmit="saveLoan(event)">
+        <input type="hidden" id="editLoanId" value="">
         <div class="form-group">
           <label>Pilih Barang Gudang</label>
-          <select id="inputItem" class="select-input" required="">
+          <select id="inputItem" class="select-input" required>
             <option value="KIT Hands ON">KIT Hands ON</option>
             <option value="KIT Operasi">KIT Operasi</option>
             <option value="Micromotor">Micromotor</option>
@@ -419,66 +405,68 @@
         </div>
         <div class="form-group">
           <label>Jumlah (Qty)</label>
-          <input type="number" id="inputQty" class="standard-input" value="1" min="1" required="">
+          <input type="number" id="inputQty" class="standard-input" value="1" min="1" required>
         </div>
         <div class="form-group">
           <label>Nama Sales yang Membawa</label>
-          <input type="text" id="inputSales" class="standard-input" placeholder="Andi Wijaya" required="">
+          <input type="text" id="inputSales" class="standard-input" placeholder="Andi Wijaya" required>
         </div>
         <div class="form-group">
           <label>Tanggal Pinjam</label>
-          <input type="date" id="inputDate" class="standard-input" required="">
+          <input type="date" id="inputDate" class="standard-input" required>
         </div>
 
         <div class="form-group">
           <label>Foto Bukti Barang Dipinjam</label>
           <input type="file" id="inputImage" class="standard-input" accept="image/*" onchange="previewImage(event, 'imagePreview', 'imagePreviewBox', 'borrow')">
-          <div id="imagePreviewBox" class="image-preview-container" style="display: none;">
-            <img id="imagePreview" src="file:///C:/Users/grati/OneDrive/Documents/Pemprograman%20WEB%201/Pertemuan%203.html" alt="Preview Barang Dipinjam">
+          <div id="imagePreviewBox" class="image-preview-container">
+            <img id="imagePreview" src="" alt="Preview Barang Dipinjam">
           </div>
         </div>
 
         <button type="submit" class="btn-submit">Simpan Catatan</button>
+        <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
       </form>
     </div>
   </div>
 
   <!-- MODAL 2: FORM PENGEMBALIAN BARANG -->
-  <div id="returnModal" class="modal" style="display: none;">
+  <div id="returnModal" class="modal">
     <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 1.1rem;">Proses Pengembalian Barang</h3>
-        <i class="ph ph-x" style="cursor: pointer; font-size: 20px;" onclick="closeReturnModal()"></i>
+      <div class="modal-header">
+        <h3>Proses Pengembalian Barang</h3>
+        <button type="button" class="close-btn" onclick="closeReturnModal()"><i class="ph ph-x"></i></button>
       </div>
       <form onsubmit="submitReturn(event)">
-        <input type="hidden" id="returnItemId" value="2">
+        <input type="hidden" id="returnItemId">
         <div class="form-group">
           <label>Tanggal Pengembalian</label>
-          <input type="date" id="returnDate" class="standard-input" required="">
+          <input type="date" id="returnDate" class="standard-input" required>
         </div>
         <div class="form-group">
           <label>Foto Bukti Barang Dikembalikan</label>
-          <input type="file" id="returnImageInput" class="standard-input" accept="image/*" onchange="previewImage(event, 'returnImagePreview', 'returnImagePreviewBox', 'return')" required="">
-          <div id="returnImagePreviewBox" class="image-preview-container" style="display: none;">
-            <img id="returnImagePreview" src="file:///C:/Users/grati/OneDrive/Documents/Pemprograman%20WEB%201/Pertemuan%203.html" alt="Preview Barang Dikembalikan">
+          <input type="file" id="returnImageInput" class="standard-input" accept="image/*" onchange="previewImage(event, 'returnImagePreview', 'returnImagePreviewBox', 'return')" required>
+          <div id="returnImagePreviewBox" class="image-preview-container">
+            <img id="returnImagePreview" src="" alt="Preview Barang Dikembalikan">
           </div>
         </div>
         <button type="submit" class="btn-submit" style="background-color: #22c55e;">Konfirmasi Pengembalian</button>
+        <button type="button" class="btn-secondary" onclick="closeReturnModal()">Batal</button>
       </form>
     </div>
   </div>
 
   <!-- MODAL 3: TAMBAH / UPDATE STOK GUDANG -->
-  <div id="stockModal" class="modal" style="display: none;">
+  <div id="stockModal" class="modal">
     <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 1.1rem;">Update Stok Barang Gudang</h3>
-        <i class="ph ph-x" style="cursor: pointer; font-size: 20px;" onclick="closeStockModal()"></i>
+      <div class="modal-header">
+        <h3>Update Stok Barang Gudang</h3>
+        <button type="button" class="close-btn" onclick="closeStockModal()"><i class="ph ph-x"></i></button>
       </div>
       <form onsubmit="updateStockItem(event)">
         <div class="form-group">
           <label>Kategori Barang</label>
-          <select id="stockCategorySelect" class="select-input" required="">
+          <select id="stockCategorySelect" class="select-input" required>
             <option value="KIT Hands ON">KIT Hands ON</option>
             <option value="KIT Operasi">KIT Operasi</option>
             <option value="Micromotor">Micromotor</option>
@@ -486,9 +474,10 @@
         </div>
         <div class="form-group">
           <label>Tambah Jumlah Stok Fisik Baru</label>
-          <input type="number" id="addStockQty" class="standard-input" value="5" min="1" required="">
+          <input type="number" id="addStockQty" class="standard-input" value="5" min="1" required>
         </div>
         <button type="submit" class="btn-submit" style="background-color: #16a34a;">Tambahkan ke Stok Gudang</button>
+        <button type="button" class="btn-secondary" onclick="closeStockModal()">Batal</button>
       </form>
     </div>
   </div>
@@ -496,11 +485,11 @@
   <!-- MODAL 4: VIEW FOTO BESAR -->
   <div id="viewImageModal" class="modal" onclick="closeViewImageModal()">
     <div class="view-image-modal-content" onclick="event.stopPropagation()">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <div class="modal-header">
         <span id="viewImageTitle" style="font-weight: 600; font-size: 0.95rem;">Foto Bukti Barang</span>
-        <i class="ph ph-x" style="cursor: pointer; font-size: 22px;" onclick="closeViewImageModal()"></i>
+        <button type="button" class="close-btn" onclick="closeViewImageModal()"><i class="ph ph-x"></i></button>
       </div>
-      <img id="fullImageView" src="file:///C:/Users/grati/OneDrive/Documents/Pemprograman%20WEB%201/Pertemuan%203.html" alt="Bukti Foto Lengkap">
+      <img id="fullImageView" src="" alt="Bukti Foto Lengkap">
     </div>
   </div>
 
@@ -509,7 +498,6 @@
       '81234567890': { name: 'Admin Gudang', role: 'Admin Utama Gudang', pass: '123456' }
     };
 
-    // STOK UTAMA GUDANG
     let inventoryStock = {
       'KIT Hands ON': { code: 'KIT-HON-01', total: 15 },
       'KIT Operasi': { code: 'KIT-OPS-02', total: 10 },
@@ -525,6 +513,16 @@
     let currentBorrowImage = '';
     let currentReturnImage = '';
 
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
     function switchSidebarMenu(menu) {
       document.getElementById('menuLoan').classList.remove('active');
       document.getElementById('menuStock').classList.remove('active');
@@ -535,12 +533,14 @@
         document.getElementById('menuLoan').classList.add('active');
         document.getElementById('sectionLoan').classList.add('active');
         document.getElementById('pageTitleDisplay').innerText = 'Sistem Pencatatan Peminjaman Sales';
+        renderTable();
       } else {
         document.getElementById('menuStock').classList.add('active');
         document.getElementById('sectionStock').classList.add('active');
         document.getElementById('pageTitleDisplay').innerText = 'Manajemen Stok Barang Gudang';
         renderStockTable();
       }
+      closeMobileSidebar();
     }
 
     function switchTab(type) {
@@ -659,10 +659,14 @@
           <td>${data.returnDate || '-'}</td>
           <td><span class="badge ${data.status === 'Dipinjam' ? 'badge-borrowed' : 'badge-returned'}">${data.status}</span></td>
           <td>
-            ${data.status === 'Dipinjam' 
-              ? `<button class="btn-sm btn-success" onclick="openReturnModal(${data.id})"><i class="ph ph-check"></i> Kembalikan</button>`
-              : `<span style="color: #94a3b8; font-size: 0.8rem;">Selesai</span>`
-            }
+            <div class="action-btns">
+              ${data.status === 'Dipinjam' 
+                ? `<button class="btn-sm btn-success" onclick="openReturnModal(${data.id})"><i class="ph ph-check"></i> Kembalikan</button>`
+                : `<span style="color: #94a3b8; font-size: 0.8rem; margin-right:4px;">Selesai</span>`
+              }
+              <button class="btn-sm btn-warning" onclick="editLoan(${data.id})" title="Edit History"><i class="ph ph-pencil-simple"></i></button>
+              <button class="btn-sm btn-danger" onclick="deleteLoan(${data.id})" title="Hapus History"><i class="ph ph-trash"></i></button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -677,7 +681,6 @@
       const tbody = document.getElementById('stockTableBody');
       tbody.innerHTML = '';
 
-      // Kalkulasi barang yang sedang dipinjam
       let borrowedMap = { 'KIT Hands ON': 0, 'KIT Operasi': 0, 'Micromotor': 0 };
       loanData.forEach(item => {
         if(item.status === 'Dipinjam' && borrowedMap[item.item] !== undefined) {
@@ -701,7 +704,6 @@
         tbody.appendChild(tr);
       }
 
-      // Update ringkasan atas stok
       document.getElementById('stockHandsOn').innerText = (inventoryStock['KIT Hands ON'].total - (borrowedMap['KIT Hands ON'] || 0)) + ' pcs';
       document.getElementById('stockOperasi').innerText = (inventoryStock['KIT Operasi'].total - (borrowedMap['KIT Operasi'] || 0)) + ' pcs';
       document.getElementById('stockMicromotor').innerText = (inventoryStock['Micromotor'].total - (borrowedMap['Micromotor'] || 0)) + ' pcs';
@@ -730,17 +732,28 @@
         item.status = 'Dikembalikan';
         item.returnDate = returnDate;
         item.returnImage = currentReturnImage;
+
+        // OTOMATIS TAMBAH STOK GUDANG KEMBALI
+        if(inventoryStock[item.item]) {
+          inventoryStock[item.item].total += parseInt(item.qty);
+        }
+
         renderTable();
+        renderStockTable();
         closeReturnModal();
+        alert(`Barang ${item.item} (${item.qty} pcs) berhasil dikembalikan! Stok gudang bertambah.`);
       }
     }
 
     function openModal() {
+      document.getElementById('editLoanId').value = '';
+      document.getElementById('loanModalTitle').innerText = 'Catat Peminjaman Barang';
       document.getElementById('loanModal').style.display = 'flex';
       document.getElementById('inputDate').valueAsDate = new Date();
       currentBorrowImage = '';
       document.getElementById('imagePreviewBox').style.display = 'none';
       document.getElementById('inputImage').value = '';
+      document.getElementById('inputSales').value = '';
     }
 
     function closeModal() {
@@ -768,42 +781,116 @@
       }
     }
 
-    function addLoan(e) {
+    function editLoan(id) {
+      const item = loanData.find(d => d.id === id);
+      if(item) {
+        document.getElementById('editLoanId').value = item.id;
+        document.getElementById('loanModalTitle').innerText = 'Edit History Peminjaman';
+        document.getElementById('inputItem').value = item.item;
+        document.getElementById('inputQty').value = item.qty;
+        document.getElementById('inputSales').value = item.sales;
+        document.getElementById('inputDate').value = item.date;
+
+        currentBorrowImage = item.image;
+        if(item.image) {
+          document.getElementById('imagePreview').src = item.image;
+          document.getElementById('imagePreviewBox').style.display = 'block';
+        } else {
+          document.getElementById('imagePreviewBox').style.display = 'none';
+        }
+
+        document.getElementById('loanModal').style.display = 'flex';
+      }
+    }
+
+    function deleteLoan(id) {
+      const item = loanData.find(d => d.id === id);
+      if(item && confirm('Apakah Anda yakin ingin menghapus history peminjaman ini?')) {
+        // JIKA DIHAPUS SAAT MASIH DIPINJAM, KEMBALIKAN STOK FISIK
+        if(item.status === 'Dipinjam' && inventoryStock[item.item]) {
+          inventoryStock[item.item].total += parseInt(item.qty);
+        }
+        loanData = loanData.filter(d => d.id !== id);
+        renderTable();
+        renderStockTable();
+      }
+    }
+
+    function saveLoan(e) {
       e.preventDefault();
+      const editId = document.getElementById('editLoanId').value;
       const selectedItem = document.getElementById('inputItem').value;
       const qty = parseInt(document.getElementById('inputQty').value);
+      const sales = document.getElementById('inputSales').value;
+      const date = document.getElementById('inputDate').value;
 
-      // Cek apakah stok cukup
-      let borrowedQty = 0;
-      loanData.forEach(item => {
-        if(item.item === selectedItem && item.status === 'Dipinjam') {
-          borrowedQty += parseInt(item.qty);
+      if(editId) {
+        // EDIT HISTORI LAMA
+        const item = loanData.find(d => d.id === parseInt(editId));
+        if(item) {
+          // KOREKSI STOK JIKA QTY ATAU BARANG DIUBAH
+          if(item.status === 'Dipinjam') {
+            inventoryStock[item.item].total += parseInt(item.qty); // kembalikan qty lama
+            
+            let borrowedQty = 0;
+            loanData.forEach(d => {
+              if(d.item === selectedItem && d.status === 'Dipinjam' && d.id !== item.id) {
+                borrowedQty += parseInt(d.qty);
+              }
+            });
+            const currentAvailable = inventoryStock[selectedItem].total - borrowedQty;
+
+            if(qty > currentAvailable) {
+              inventoryStock[item.item].total -= parseInt(item.qty); // rollback
+              alert(`Stok ${selectedItem} tidak cukup untuk perubahan ini! Tersedia: ${currentAvailable} pcs.`);
+              return;
+            }
+
+            inventoryStock[selectedItem].total -= qty; // potong stok baru
+          }
+
+          item.item = selectedItem;
+          item.qty = qty;
+          item.sales = sales;
+          item.date = date;
+          if(currentBorrowImage) item.image = currentBorrowImage;
         }
-      });
+      } else {
+        // PINJAM BARU (KURANGI STOK GUDANG OTOMATIS)
+        let borrowedQty = 0;
+        loanData.forEach(item => {
+          if(item.item === selectedItem && item.status === 'Dipinjam') {
+            borrowedQty += parseInt(item.qty);
+          }
+        });
 
-      const currentAvailable = inventoryStock[selectedItem].total - borrowedQty;
+        const currentAvailable = inventoryStock[selectedItem].total - borrowedQty;
 
-      if(qty > currentAvailable) {
-        alert(`Stok ${selectedItem} tidak mencukupi! Stok tersedia di gudang hanya ${currentAvailable} pcs.`);
-        return;
+        if(qty > currentAvailable) {
+          alert(`Stok ${selectedItem} tidak mencukupi! Stok tersedia di gudang hanya ${currentAvailable} pcs.`);
+          return;
+        }
+
+        // OTOMATIS KURANGI STOK FISIK
+        inventoryStock[selectedItem].total -= qty;
+
+        loanData.unshift({
+          id: Date.now(),
+          item: selectedItem,
+          qty: qty,
+          sales: sales,
+          date: date,
+          returnDate: '-',
+          status: 'Dipinjam',
+          image: currentBorrowImage,
+          returnImage: ''
+        });
       }
 
-      loanData.unshift({
-        id: Date.now(),
-        item: selectedItem,
-        qty: qty,
-        sales: document.getElementById('inputSales').value,
-        date: document.getElementById('inputDate').value,
-        returnDate: '-',
-        status: 'Dipinjam',
-        image: currentBorrowImage,
-        returnImage: ''
-      });
-
       renderTable();
+      renderStockTable();
       closeModal();
-      document.getElementById('inputSales').value = '';
     }
   </script>
-
-</body></html>
+</body>
+</html>
